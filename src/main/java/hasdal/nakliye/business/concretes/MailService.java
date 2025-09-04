@@ -1,6 +1,7 @@
 package hasdal.nakliye.business.concretes;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,14 @@ public class MailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
+	@Value("${mail.to}")
+	private String mailTo;
+	
 	public void sendMail(String text, String subject) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		message.setText(text);
 		message.setSubject(subject);
-		message.setTo("sevketemingurbuz6@gmail.com");
-//		message.setSubject(subject);
+		message.setTo(mailTo);
 		javaMailSender.send(message);//11.21-12.34 13.36-14.56 => 1.13+1.20+1.50 = 4.23
 	}
 

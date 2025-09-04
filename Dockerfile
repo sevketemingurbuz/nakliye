@@ -1,18 +1,26 @@
-# Base image
-FROM eclipse-temurin:17-jdk-alpine
+# Build stage
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-# Çalışma dizini
 WORKDIR /app
-
-# Maven ve kaynakları kopyala
+# Önce mvnw ve pom.xml'i kopyala
+COPY mvnw .
+COPY .mvn .mvn
 COPY pom.xml .
 COPY src ./src
 
-# Maven build (testleri atla)
-RUN ./mvnw clean package -DskipTests || mvn clean package -DskipTests
+# mvnw'yi executable yap
+RUN chmod +x mvnw
 
-# Jar dosyasını çalıştır
-CMD ["java", "-jar", "target/nakliye-0.0.1-SNAPSHOT.jar"]
+# Maven Wrapper ile build et
+RUN ./mvnw clean package -DskipTests
 
-# Port
-EXPOSE 8080
+# Run stage
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
+ENV PORT=8080
+EXPOSE $PORT
+
+ENTRYPOINT ["sh", "-c", "java -jar -Dserver.port=${PORT} app.jar"]
