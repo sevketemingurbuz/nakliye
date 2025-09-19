@@ -11,7 +11,7 @@ import hasdal.nakliye.business.concretes.MailService;
 import hasdal.nakliye.entities.MailRequest;
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "https://man-last-demo.vercel.app")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/mail")
 public class MailController {
