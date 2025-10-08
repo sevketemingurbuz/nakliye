@@ -11,13 +11,12 @@ public class MailService {
 	@Autowired
 	private JavaMailSender javaMailSender;
 	
-	
 	public void sendMail(String text, String subject) {
 		SimpleMailMessage message = new SimpleMailMessage();
-		message.setFrom("noreply@mersinarslannakliyat.com");
+		message.setFrom("bilgi@mersinarslannakliyat.com");
 		message.setText(text);
 		message.setSubject(subject);
-		message.setTo("c.hasdalyazilim@gmail.com");
+		message.setTo("sevketemingurbuz6@gmail.com");
 		javaMailSender.send(message);//11.21-12.34 13.36-14.56 => 1.13+1.20+1.50 = 4.23
 	}
 	
